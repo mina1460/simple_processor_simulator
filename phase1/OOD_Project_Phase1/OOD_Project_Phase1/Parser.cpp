@@ -51,8 +51,8 @@ int parser::parse() {
         
         std::vector<std::string> split_instructions = split(line);
         opcode_t opcode = get_opcode(split_instructions);
-        instruction instruction = factory.create_instruction(opcode, split_instructions);
-        instruction.log();
+        instruction* instruction = factory.create_instruction(opcode, split_instructions);
+        instruction->log();
         instructions.push_back(instruction);
         counter++;
     }
@@ -109,7 +109,7 @@ opcode_t parser::get_opcode(std::vector<std::string>& p_instruction){
     }
 }
 
-std::vector<instruction>& parser::get_instructions(){
+std::vector<instruction*>& parser::get_instructions(){
     return instructions;
 }
 

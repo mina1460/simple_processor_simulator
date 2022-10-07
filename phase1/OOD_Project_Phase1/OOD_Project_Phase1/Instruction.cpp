@@ -4,32 +4,32 @@
 
 instruction_factory::instruction_factory(){}
 
-instruction instruction_factory::create_instruction(opcode_t opcode, std::vector<std::string> operands){
+instruction* instruction_factory::create_instruction(opcode_t opcode, std::vector<std::string> operands){
     switch (opcode)
     {
         case ADD_OPCODE:
-            return ADD_instruction(operands);
+            return new ADD_instruction(operands);
             break;
         case NEG_OPCODE:
-            return NEG_instruction(operands);
+            return new NEG_instruction(operands);
             break;
         case MUL_OPCODE:
-            return MUL_instruction(operands);
+            return new  MUL_instruction(operands);
             break;
         case JPA_OPCODE:
-            return JPA_instruction(operands);
+            return new JPA_instruction(operands);
             break;
         case JPO_OPCODE:
-            return JPo_instruction(operands);
+            return new JPo_instruction(operands);
             break;
         case ASI_OPCODE:
-            return ASI_instruction(operands);
+            return new ASI_instruction(operands);
             break;
         case LOE_OPCODE:
-            return LOE_instruction(operands);
+            return new LOE_instruction(operands);
             break;
         case HLT_OPCODE:
-            return HLT_instruction(operands);
+            return new HLT_instruction(operands);
             break;
         default:
             throw(std::invalid_argument("Invalid opcode"));
@@ -38,22 +38,20 @@ instruction instruction_factory::create_instruction(opcode_t opcode, std::vector
 
 void instruction::log(){
     std::cout << "Instruction: " << opcode << " ";
-    for (auto& operand : operands){
-        std::cout << operand << " ";
-    }
     std::cout << std::endl;
 }
 
 instruction_factory::~instruction_factory(){}
+instruction::instruction(){}
+instruction::~instruction(){}
 
+// ADD_instruction::ADD_instruction(std::vector<std::string>& p_instruction){
+//     opcode = ADD_OPCODE;
+//     if(p_instruction.size() != 4){
+//         throw(std::invalid_argument("Invalid number of operands"));
+//     }
+//     operand1 = std::stoi(p_instruction[1]);
+//     operand2 = std::stoi(p_instruction[2]);
+//     result = std::stoi(p_instruction[3]);
+// }
 
-
-instruction::instruction(){
-    
-}
-
-
-
-instruction::~instruction(){
-
-}

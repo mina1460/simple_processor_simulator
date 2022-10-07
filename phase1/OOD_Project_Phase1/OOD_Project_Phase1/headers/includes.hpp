@@ -27,5 +27,4 @@ typedef short opcode_t;
 #define HLT_OPCODE 8
 
 
-
 #endif /* INCLUDES_HPP */

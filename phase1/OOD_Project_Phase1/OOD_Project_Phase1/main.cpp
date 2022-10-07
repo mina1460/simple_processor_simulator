@@ -19,7 +19,8 @@ int main(int argc, const char * argv[]) {
     do {
         fetched_instructions = parser.parse();
         sim.add_instructions(parser.get_instructions());
-
+        std::cout << "fetched_instructions count: " << fetched_instructions << std::endl;
+        sim.process(fetched_instructions);
     }while (fetched_instructions == INSTRUCTION_MEMORY_SIZE);
 
     
