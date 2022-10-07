@@ -45,13 +45,13 @@ instruction_factory::~instruction_factory(){}
 instruction::instruction(){}
 instruction::~instruction(){}
 
-// ADD_instruction::ADD_instruction(std::vector<std::string>& p_instruction){
-//     opcode = ADD_OPCODE;
-//     if(p_instruction.size() != 4){
-//         throw(std::invalid_argument("Invalid number of operands"));
-//     }
-//     operand1 = std::stoi(p_instruction[1]);
-//     operand2 = std::stoi(p_instruction[2]);
-//     result = std::stoi(p_instruction[3]);
-// }
+ADD_instruction::ADD_instruction(std::vector<std::string>& p_instruction){
+    opcode = ADD_OPCODE;
+    if(p_instruction.size() != 4){
+        throw(std::invalid_argument("Invalid number of operands"));
+    }
+    operand1 = std::stoi(p_instruction[1]);
+    operand2 = std::stoi(p_instruction[2]);
+    result = std::stoi(p_instruction[3]);
+}
 

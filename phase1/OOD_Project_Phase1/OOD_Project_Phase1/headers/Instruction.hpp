@@ -29,12 +29,12 @@ class instruction {
 
 class ADD_instruction : public instruction {
     public:
-        ADD_instruction(std::vector<std::string>& p_instruction){
-            opcode = ADD_OPCODE;
-
-        };
+        ADD_instruction(std::vector<std::string>& p_instruction);
         void execute(){
             std::cout << "Executing ADD instruction" << std::endl;
+            result = operand1 + operand2;
+            std::cout << "Adding " << operand1 << " and " << operand2 << std::endl;
+            std::cout << "Result is " << result << std::endl;
         }
         ~ADD_instruction(){}
     private:
