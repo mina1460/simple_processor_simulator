@@ -1,1 +1,1 @@
-# simple_processor_simualtor
+# simple_processor_simulator
