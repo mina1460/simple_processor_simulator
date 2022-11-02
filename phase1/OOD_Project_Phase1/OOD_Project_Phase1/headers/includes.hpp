@@ -21,7 +21,7 @@ typedef short opcode_t;
 #define NEG_OPCODE 2
 #define MUL_OPCODE 3
 #define JPA_OPCODE 4
-#define JPO_OPCODE 5
+#define JP0_OPCODE 5
 #define ASI_OPCODE 6
 #define LOE_OPCODE 7
 #define HLT_OPCODE 8

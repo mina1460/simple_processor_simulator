@@ -49,11 +49,16 @@ int parser::parse() {
         }
         seek_position = input_file.tellg();
         
-        std::vector<std::string> split_instructions = split(line);
-        opcode_t opcode = get_opcode(split_instructions);
-        Instruction* instruction = factory.create_instruction(opcode, split_instructions);
-        instruction->log();
-        instructions.push_back(instruction);
+        try{
+            std::vector<std::string> split_instructions = split(line);
+            opcode_t opcode = get_opcode(split_instructions);
+            Instruction* instruction = factory.create_instruction(opcode, split_instructions);
+            // instruction->log();
+            instructions.push_back(instruction);
+        }catch (std::exception& e){
+            std::cerr << "Error creating instruction: " << e.what() << std::endl;
+            throw;
+        }
         counter++;
     }
     return counter;
@@ -65,7 +70,7 @@ const std::unordered_map<std::string, opcode_t>& parser::Opcodes() {
         {"NEG", NEG_OPCODE},
         {"MUL", MUL_OPCODE},
         {"JPA", JPA_OPCODE},
-        {"JPO", JPO_OPCODE},
+        {"JP0", JP0_OPCODE},
         {"ASI", ASI_OPCODE},
         {"LOE", LOE_OPCODE},
         {"HLT", HLT_OPCODE},
@@ -92,8 +97,8 @@ opcode_t parser::get_opcode(std::vector<std::string>& p_instruction){
     else if(match(operation, "JPA")){
         return Opcodes().at("JPA");
     }
-    else if (match(operation, "JPo")){
-        return Opcodes().at("JPo");
+    else if (match(operation, "JP0")){
+        return Opcodes().at("JP0");
     }
     else if (match(operation, "ASI")){
         return Opcodes().at("ASI");

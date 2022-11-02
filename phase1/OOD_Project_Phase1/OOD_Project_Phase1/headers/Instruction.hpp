@@ -17,6 +17,9 @@ class Instruction {
         Instruction();
         Instruction(std::string line);
         int get_opcode(std::vector<std::string>& p_instruction);
+        void set_data_memory(std::array<int32_t, DATA_MEMORY_SIZE>* p_data_memory);
+        void set_instruction_counter(int* p_instruction_counter);
+        void set_fetched_instructions_count(int* p_fetched_instructions_count);
         virtual void execute() = 0;
         virtual void log();
         ~Instruction();
@@ -24,18 +27,16 @@ class Instruction {
         const std::unordered_map<std::string, opcode_t>& Opcodes();
     protected:
         opcode_t opcode;
+        std::array<int32_t, DATA_MEMORY_SIZE>* data_memory;
+        int* instruction_counter;
+        int* fetched_instructions_count;
 };
 
 
 class ADD_instruction : public Instruction {
     public:
         ADD_instruction(std::vector<std::string>& p_instruction);
-        void execute(){
-            std::cout << "Executing ADD instruction" << std::endl;
-            result = operand1 + operand2;
-            std::cout << "Adding " << operand1 << " and " << operand2 << std::endl;
-            std::cout << "Result is " << result << std::endl;
-        }
+        void execute();
         ~ADD_instruction(){}
     private:
         int32_t operand1;
@@ -45,12 +46,8 @@ class ADD_instruction : public Instruction {
 
 class NEG_instruction : public Instruction {
     public:
-        NEG_instruction(std::vector<std::string>& p_instruction){
-            opcode = NEG_OPCODE;
-        };
-        void execute(){
-            std::cout << "Executing NEG instruction" << std::endl;
-        }
+        NEG_instruction(std::vector<std::string>& p_instruction);
+        void execute();
         ~NEG_instruction(){}
     private:
         int32_t operand1;
@@ -59,10 +56,8 @@ class NEG_instruction : public Instruction {
 
 class MUL_instruction : public Instruction {
     public:
-        MUL_instruction(std::vector<std::string>& p_instruction){}
-        void execute(){
-            std::cout << "Executing MUL instruction" << std::endl;
-        }
+        MUL_instruction(std::vector<std::string>& p_instruction);
+        void execute();
         ~MUL_instruction(){}
     private:
         int32_t operand1;
@@ -72,32 +67,27 @@ class MUL_instruction : public Instruction {
 
 class JPA_instruction : public Instruction {
     public:
-        JPA_instruction(std::vector<std::string>& p_instruction){}
-        void execute(){
-            std::cout << "Executing JPA instruction" << std::endl;
-        }
+        JPA_instruction(std::vector<std::string>& p_instruction);
+        void execute();
         ~JPA_instruction(){}
     private:
         int32_t operand1;
 };
 
-class JPo_instruction : public Instruction {
+class JP0_instruction : public Instruction {
     public:
-        JPo_instruction(std::vector<std::string>& p_instruction){}
-        void execute(){
-            std::cout << "Executing JPO instruction" << std::endl;
-        }
-        ~JPo_instruction(){}
+        JP0_instruction(std::vector<std::string>& p_instruction);
+        void execute();
+        ~JP0_instruction(){}
     private:
         int32_t operand1;
+        int32_t operand2;
 };
 
 class ASI_instruction : public Instruction {
     public:
-        ASI_instruction(std::vector<std::string>& p_instruction){}
-        void execute(){
-            std::cout << "Executing ASI instruction" << std::endl;
-        }
+        ASI_instruction(std::vector<std::string>& p_instruction);
+        void execute();
         ~ASI_instruction(){}
     private:
         int32_t operand1;
@@ -106,10 +96,8 @@ class ASI_instruction : public Instruction {
 
 class LOE_instruction : public Instruction {
     public:
-        LOE_instruction(std::vector<std::string>& p_instruction){}
-        void execute(){
-            std::cout << "Executing LOE instruction" << std::endl;
-        }
+        LOE_instruction(std::vector<std::string>& p_instruction);
+        void execute();
         ~LOE_instruction(){}
     private:
         int32_t operand1;
@@ -119,10 +107,8 @@ class LOE_instruction : public Instruction {
 
 class HLT_instruction : public Instruction {
     public:
-        HLT_instruction(std::vector<std::string>& p_instruction){}
-        void execute(){
-            std::cout << "Executing HLT instruction" << std::endl;
-        }
+        HLT_instruction(std::vector<std::string>& p_instruction);
+        void execute();
         ~HLT_instruction(){}
     private:
 };

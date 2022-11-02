@@ -16,14 +16,17 @@ int main(int argc, const char * argv[]) {
     SIM sim;
     int fetched_instructions = 0;
 
-    do {
-        fetched_instructions = parser.parse();
-        sim.add_instructions(parser.get_instructions());
-        std::cout << "fetched_instructions count: " << fetched_instructions << std::endl;
-        sim.process(fetched_instructions);
-    }while (fetched_instructions == INSTRUCTION_MEMORY_SIZE);
-
-    
+    try{
+        do {
+            fetched_instructions = parser.parse();
+            sim.add_instructions(parser.get_instructions());
+            SIM::fetched_instructions_count = fetched_instructions;
+            std::cout << "fetched_instructions count: " << SIM::fetched_instructions_count << std::endl;
+            sim.process();
+        }while (fetched_instructions == INSTRUCTION_MEMORY_SIZE);
+    }catch (const std::exception& e){
+        return EXIT_FAILURE;
+    }
 
     return 0;
 }
