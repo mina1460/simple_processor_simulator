@@ -1,8 +1,8 @@
-#include "headers/includes.hpp"
+#include "../headers/includes.hpp"
 
-#include "headers/Parser.hpp"
-#include "headers/Instruction.hpp"
-#include "headers/SIM.hpp"
+#include "../headers/Parser.hpp"
+#include "../headers/Instruction.hpp"
+#include "../headers/SIM.hpp"
 
 
 using namespace std;
@@ -10,7 +10,7 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     
-    string input_code_path = "/Users/minaashraf/university/fall_2022/OOD/project/OOD_project/OOD_project/test.txt";
+    string input_code_path = "./test.txt";
     
     parser parser(input_code_path);
     SIM sim;

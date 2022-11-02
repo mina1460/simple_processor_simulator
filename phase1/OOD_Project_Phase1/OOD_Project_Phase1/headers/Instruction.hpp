@@ -3,23 +3,23 @@
 
 #include "includes.hpp"
 
-class instruction;
+class Instruction;
 
-class instruction_factory{
+class InstructionFactory{
     public:
-        instruction_factory();
-        instruction* create_instruction(opcode_t opcode, std::vector<std::string> operands);
-        ~instruction_factory();        
+        InstructionFactory();
+        Instruction* create_instruction(opcode_t opcode, std::vector<std::string> operands);
+        ~InstructionFactory();        
 };
 
-class instruction {
+class Instruction {
     public:
-        instruction();
-        instruction(std::string line);
+        Instruction();
+        Instruction(std::string line);
         int get_opcode(std::vector<std::string>& p_instruction);
         virtual void execute() = 0;
         virtual void log();
-        ~instruction();
+        ~Instruction();
     private:
         const std::unordered_map<std::string, opcode_t>& Opcodes();
     protected:
@@ -27,7 +27,7 @@ class instruction {
 };
 
 
-class ADD_instruction : public instruction {
+class ADD_instruction : public Instruction {
     public:
         ADD_instruction(std::vector<std::string>& p_instruction);
         void execute(){
@@ -43,7 +43,7 @@ class ADD_instruction : public instruction {
         int32_t result;
 };
 
-class NEG_instruction : public instruction {
+class NEG_instruction : public Instruction {
     public:
         NEG_instruction(std::vector<std::string>& p_instruction){
             opcode = NEG_OPCODE;
@@ -57,7 +57,7 @@ class NEG_instruction : public instruction {
         int32_t result;
 };
 
-class MUL_instruction : public instruction {
+class MUL_instruction : public Instruction {
     public:
         MUL_instruction(std::vector<std::string>& p_instruction){}
         void execute(){
@@ -70,7 +70,7 @@ class MUL_instruction : public instruction {
         int32_t result;
 };
 
-class JPA_instruction : public instruction {
+class JPA_instruction : public Instruction {
     public:
         JPA_instruction(std::vector<std::string>& p_instruction){}
         void execute(){
@@ -81,7 +81,7 @@ class JPA_instruction : public instruction {
         int32_t operand1;
 };
 
-class JPo_instruction : public instruction {
+class JPo_instruction : public Instruction {
     public:
         JPo_instruction(std::vector<std::string>& p_instruction){}
         void execute(){
@@ -92,7 +92,7 @@ class JPo_instruction : public instruction {
         int32_t operand1;
 };
 
-class ASI_instruction : public instruction {
+class ASI_instruction : public Instruction {
     public:
         ASI_instruction(std::vector<std::string>& p_instruction){}
         void execute(){
@@ -104,7 +104,7 @@ class ASI_instruction : public instruction {
         int32_t operand2;
 };
 
-class LOE_instruction : public instruction {
+class LOE_instruction : public Instruction {
     public:
         LOE_instruction(std::vector<std::string>& p_instruction){}
         void execute(){
@@ -117,7 +117,7 @@ class LOE_instruction : public instruction {
         int32_t result;
 };
 
-class HLT_instruction : public instruction {
+class HLT_instruction : public Instruction {
     public:
         HLT_instruction(std::vector<std::string>& p_instruction){}
         void execute(){

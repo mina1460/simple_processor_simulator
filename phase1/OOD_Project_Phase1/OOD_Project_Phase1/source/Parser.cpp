@@ -1,12 +1,12 @@
-#include "headers/Parser.hpp"
-#include "headers/Instruction.hpp"
+#include "../headers/Parser.hpp"
+#include "../headers/Instruction.hpp"
 
 void parser::init_parser(){
     input_code_path = "";
     fetched_instructions_count = 0;
     seek_position = 0;
     instructions.clear();
-    factory = instruction_factory();
+    factory = InstructionFactory();
 }
 
 parser::parser() {
@@ -51,7 +51,7 @@ int parser::parse() {
         
         std::vector<std::string> split_instructions = split(line);
         opcode_t opcode = get_opcode(split_instructions);
-        instruction* instruction = factory.create_instruction(opcode, split_instructions);
+        Instruction* instruction = factory.create_instruction(opcode, split_instructions);
         instruction->log();
         instructions.push_back(instruction);
         counter++;
@@ -109,7 +109,7 @@ opcode_t parser::get_opcode(std::vector<std::string>& p_instruction){
     }
 }
 
-std::vector<instruction*>& parser::get_instructions(){
+std::vector<Instruction*>& parser::get_instructions(){
     return instructions;
 }
 

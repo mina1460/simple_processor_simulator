@@ -1,10 +1,10 @@
 
-#include "headers/Instruction.hpp"
+#include "../headers/Instruction.hpp"
 
 
-instruction_factory::instruction_factory(){}
+InstructionFactory::InstructionFactory(){}
 
-instruction* instruction_factory::create_instruction(opcode_t opcode, std::vector<std::string> operands){
+Instruction* InstructionFactory::create_instruction(opcode_t opcode, std::vector<std::string> operands){
     switch (opcode)
     {
         case ADD_OPCODE:
@@ -36,14 +36,14 @@ instruction* instruction_factory::create_instruction(opcode_t opcode, std::vecto
     }
 }
 
-void instruction::log(){
+void Instruction::log(){
     std::cout << "Instruction: " << opcode << " ";
     std::cout << std::endl;
 }
 
-instruction_factory::~instruction_factory(){}
-instruction::instruction(){}
-instruction::~instruction(){}
+InstructionFactory::~InstructionFactory(){}
+Instruction::Instruction(){}
+Instruction::~Instruction(){}
 
 ADD_instruction::ADD_instruction(std::vector<std::string>& p_instruction){
     opcode = ADD_OPCODE;
