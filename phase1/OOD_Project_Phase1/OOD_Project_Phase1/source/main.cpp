@@ -10,20 +10,22 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     
-    string input_code_path = "./test.txt";
+    if (argc != 2){
+        cout << "Usage: ./SIM <input_file_path>" << endl;
+        return 1;
+    }
+    string input_code_path = argv[1];
     
     parser parser(input_code_path);
     SIM sim;
     int fetched_instructions = 0;
 
     try{
-        do {
-            fetched_instructions = parser.parse();
-            sim.add_instructions(parser.get_instructions());
-            SIM::fetched_instructions_count = fetched_instructions;
-            std::cout << "fetched_instructions count: " << SIM::fetched_instructions_count << std::endl;
-            sim.process();
-        }while (fetched_instructions == INSTRUCTION_MEMORY_SIZE);
+        fetched_instructions = parser.parse();
+        sim.add_instructions(parser.get_instructions());
+        SIM::fetched_instructions_count = fetched_instructions;
+        std::cout << "fetched_instructions count: " << SIM::fetched_instructions_count << std::endl;
+        sim.process();
     }catch (const std::exception& e){
         return EXIT_FAILURE;
     }

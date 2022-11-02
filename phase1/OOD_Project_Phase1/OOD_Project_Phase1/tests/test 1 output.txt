@@ -1,0 +1,16 @@
+Constructed SIM 
+Assigning Memory location 0 with value 10 
+Multiply memory locations 0 0 into memory location 1  
+Jumping to instruction number 4 
+Negating memory location 1 and saving in memory location 2 
+Stopping Execution 
+0:10 
+1:100
+2:-100
+3:0
+4:0
+5:0
+6:0
+7:0
+8:0
+9:0

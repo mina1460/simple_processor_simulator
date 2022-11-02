@@ -1,0 +1,6 @@
+ASI 10 0
+MUL 0 0 1
+JPA 4
+ASI 20 2
+NEG 1 2
+HLT
