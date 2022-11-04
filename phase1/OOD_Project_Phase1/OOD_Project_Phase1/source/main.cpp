@@ -29,7 +29,7 @@ int main(int argc, const char * argv[]) {
     try{
         // Fetch the instructions
         fetched_instructions = parser.parse();
-        // add the instructions to the SIM
+        // add the instructions to the SIM instruction memory
         sim.add_instructions(parser.get_instructions());
         // get the fetched instructions count
         SIM::fetched_instructions_count = fetched_instructions;

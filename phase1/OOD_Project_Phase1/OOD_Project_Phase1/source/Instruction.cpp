@@ -109,6 +109,7 @@ void NEG_instruction::execute(){
 }
 
 MUL_instruction::MUL_instruction(std::vector<std::string>& p_instruction){
+    // define the opcode and validates the number of operands
     opcode = MUL_OPCODE;
     if(p_instruction.size() != 4){
         throw(std::invalid_argument("Invalid number of operands for MUL instruction"));
@@ -118,11 +119,12 @@ MUL_instruction::MUL_instruction(std::vector<std::string>& p_instruction){
     result = std::stoi(p_instruction[3]);
 }
 void MUL_instruction::execute(){
+    // execute the mul instruction and update the data memory
     int32_t num1 = (*data_memory)[operand1];
     int32_t num2 = (*data_memory)[operand2];
     int32_t op_result = num1 * num2;
     (*data_memory)[result] = op_result;
-
+    // report the instruction execution log
     std::cout << "[" << (*instruction_counter) << "] The SIM just multiplied memory location " << operand1 << " with value " << num1 
             << " and memory location " << operand2 << " with value " << num2 
             << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
@@ -131,6 +133,7 @@ void MUL_instruction::execute(){
 
 
 JPA_instruction::JPA_instruction(std::vector<std::string>& p_instruction){
+    // define the opcode and validates the number of operands
     opcode = JPA_OPCODE;
     if(p_instruction.size() != 2){
         throw(std::invalid_argument("Invalid number of operands for JPA instruction"));
@@ -138,6 +141,8 @@ JPA_instruction::JPA_instruction(std::vector<std::string>& p_instruction){
     operand1 = std::stoi(p_instruction[1]);
 }
 void JPA_instruction::execute(){
+    // execute the jpa instruction and update the instruction counter
+    
     std::cout << "[" << (*instruction_counter) << "] ";
     if (operand1 >= 0 && operand1 < *fetched_instructions_count){
         *instruction_counter = operand1-1;
@@ -149,6 +154,7 @@ void JPA_instruction::execute(){
 }
 
 JP0_instruction::JP0_instruction(std::vector<std::string>& p_instruction){
+    // define the opcode and validates the number of operands
     opcode = JP0_OPCODE;
     if(p_instruction.size() != 3){
         throw(std::invalid_argument("Invalid number of operands for JP0 instruction"));
@@ -157,6 +163,7 @@ JP0_instruction::JP0_instruction(std::vector<std::string>& p_instruction){
     operand2 = std::stoi(p_instruction[2]);
 }
 void JP0_instruction::execute(){
+    // execute the jp0 instruction and update the instruction counter
     std::cout << "[" << (*instruction_counter) << "] ";
     int32_t num = data_memory->at(operand1);
     if (operand2 >= 0 && operand2 < *fetched_instructions_count){
