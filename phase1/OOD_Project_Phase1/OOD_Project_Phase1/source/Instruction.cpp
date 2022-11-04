@@ -3,8 +3,9 @@
 
 
 InstructionFactory::InstructionFactory(){}
-
+// using the factory pattern to create the instruction objects
 Instruction* InstructionFactory::create_instruction(opcode_t opcode, std::vector<std::string> operands){
+    // create the instruction object based on the opcode
     switch (opcode)
     {
         case ADD_OPCODE:
@@ -32,18 +33,22 @@ Instruction* InstructionFactory::create_instruction(opcode_t opcode, std::vector
             return new HLT_instruction(operands);
             break;
         default:
+            // throw an exception if the opcode is not valid
             throw(std::invalid_argument("Invalid opcode"));
     }
 }
 
 void Instruction::log(){
+    // log the instruction 
     std::cout << "Instruction: " << opcode << " ";
     std::cout << std::endl;
 }
 void Instruction::set_data_memory(std::array<int32_t, DATA_MEMORY_SIZE>* p_data_memory){
+    // set the data memory pointer inside the instruction object to know how to operate on the data memory
     data_memory = p_data_memory;
 }
 void Instruction::set_instruction_counter(int* p_instruction_counter){
+    // set the instruction counter pointer inside the instruction object 
     instruction_counter = p_instruction_counter;
 }
 void Instruction::set_fetched_instructions_count(int* p_fetched_instructions_count){
@@ -55,20 +60,25 @@ Instruction::Instruction(){}
 Instruction::~Instruction(){}
 
 ADD_instruction::ADD_instruction(std::vector<std::string>& p_instruction){
+    // define the opcode and validates the number of operands
     opcode = ADD_OPCODE;
     if(p_instruction.size() != 4){
         throw(std::invalid_argument("Invalid number of operands for ADD instruction"));
     }
+    // get the operands
     operand1 = std::stoi(p_instruction[1]);
     operand2 = std::stoi(p_instruction[2]);
+    // compute the result
     result = std::stoi(p_instruction[3]);
 }
 void ADD_instruction::execute(){
+    // execute the add instruction and update the data memory
     int32_t num1 = (*data_memory)[operand1];
     int32_t num2 = (*data_memory)[operand2];
-    int32_t op_result = num1 + num2;
-    (*data_memory)[result] = op_result;
-    // std::cout << "Executing ADD instruction" << std::endl;
+    
+    (*data_memory)[result] = num1 + num2;
+
+    // report the instruction execution log
     std::cout << "[" << (*instruction_counter) << "] The SIM just added memory location " << operand1 << " with value " << num1 
             << " and memory location " << operand2 << " with value " << num2 
             << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
@@ -76,18 +86,23 @@ void ADD_instruction::execute(){
 }
 
 NEG_instruction::NEG_instruction(std::vector<std::string>& p_instruction){
+    // define the opcode and validates the number of operands
     opcode = NEG_OPCODE;
+    // validate the number of operands
     if(p_instruction.size() != 3){
         throw(std::invalid_argument("Invalid number of operands for NEG instruction"));
     }
+    // get the operands 
     operand1 = std::stoi(p_instruction[1]);
     result = std::stoi(p_instruction[2]);
 }
 void NEG_instruction::execute(){
+
+    // execute the neg instruction and update the data memory
+
     int32_t num1 = (*data_memory)[operand1];
-    int32_t op_result = -num1;
-    (*data_memory)[result] = op_result;
-    // std::cout << "Executing NEG instruction" << std::endl;
+    (*data_memory)[result] = -num1;
+
     std::cout << "[" << (*instruction_counter) << "] The SIM just negated memory location " << operand1 << " with value " << num1 
             << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
             << std::endl;
@@ -107,7 +122,7 @@ void MUL_instruction::execute(){
     int32_t num2 = (*data_memory)[operand2];
     int32_t op_result = num1 * num2;
     (*data_memory)[result] = op_result;
-    // std::cout << "Executing MUL instruction" << std::endl;
+
     std::cout << "[" << (*instruction_counter) << "] The SIM just multiplied memory location " << operand1 << " with value " << num1 
             << " and memory location " << operand2 << " with value " << num2 
             << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
@@ -129,7 +144,6 @@ void JPA_instruction::execute(){
     } else {
         throw(std::invalid_argument("Instruction address out of range for JPA instruction"));
     }
-    // std::cout << "Executing JPA instruction" << std::endl;
     std::cout << "The SIM just jumped to instruction address " << (*instruction_counter+1)
             << std::endl;
 }
@@ -152,7 +166,6 @@ void JP0_instruction::execute(){
     } else {
         throw(std::invalid_argument("Instruction address out of range for JP0 instruction"));
     }
-    // std::cout << "Executing JP0 instruction" << std::endl;
     std::cout << "The SIM just checked memory location " << operand1 << " with value " << num 
             << ((num == 0) ? (" and it was 0, so it jumped to instruction address ") :
             (" and it was not 0, so it did not jump to memory address ")) << (*instruction_counter+1)
@@ -187,7 +200,6 @@ void LOE_instruction::execute(){
     int32_t num2 = (*data_memory)[operand2];
     int32_t op_result = num1 <= num2;
     (*data_memory)[result] = op_result;
-    // std::cout << "Executing LOE instruction" << std::endl;
     std::cout << "[" << (*instruction_counter) << "] The SIM just compared memory location " << operand1 << " with value " << num1 
             << " and memory location " << operand2 << " with value " << num2 
             << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
@@ -201,7 +213,6 @@ HLT_instruction::HLT_instruction(std::vector<std::string>& p_instruction){
     }
 }
 void HLT_instruction::execute(){
-    // std::cout << "Executing HLT instruction" << std::endl;
     std::cout << "[" << (*instruction_counter) << "] The SIM just halted" << std::endl;
     exit(0);
 }
