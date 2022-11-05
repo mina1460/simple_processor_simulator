@@ -1,0 +1,27 @@
+Constructed SIM
+fetched_instructions count: 10
+[0] The SIM just stored the value 5 in memory location 0 now with value 5
+[1] The SIM just stored the value 1 in memory location 1 now with value 1
+[2] The SIM just stored the value 2 in memory location 2 now with value 2
+[3] The SIM just stored the value 1 in memory location 3 now with value 1
+[4] The SIM just negated memory location 1 with value 1 and stored it in memory location 1 now with value -1
+[5] The SIM just multiplied memory location 2 with value 2 and memory location 3 with value 1 and stored it in memory location 3 now with value 2
+[6] The SIM just added memory location 0 with value 5 and memory location 1 with value -1 and stored it in memory location 0 now with value 4
+[7] The SIM just checked memory location 0 with value 4 and it was not 0, so it did not jump to memory address 8
+[8] The SIM just jumped to instruction address 5
+[5] The SIM just multiplied memory location 2 with value 2 and memory location 3 with value 2 and stored it in memory location 3 now with value 4
+[6] The SIM just added memory location 0 with value 4 and memory location 1 with value -1 and stored it in memory location 0 now with value 3
+[7] The SIM just checked memory location 0 with value 3 and it was not 0, so it did not jump to memory address 8
+[8] The SIM just jumped to instruction address 5
+[5] The SIM just multiplied memory location 2 with value 2 and memory location 3 with value 4 and stored it in memory location 3 now with value 8
+[6] The SIM just added memory location 0 with value 3 and memory location 1 with value -1 and stored it in memory location 0 now with value 2
+[7] The SIM just checked memory location 0 with value 2 and it was not 0, so it did not jump to memory address 8
+[8] The SIM just jumped to instruction address 5
+[5] The SIM just multiplied memory location 2 with value 2 and memory location 3 with value 8 and stored it in memory location 3 now with value 16
+[6] The SIM just added memory location 0 with value 2 and memory location 1 with value -1 and stored it in memory location 0 now with value 1
+[7] The SIM just checked memory location 0 with value 1 and it was not 0, so it did not jump to memory address 8
+[8] The SIM just jumped to instruction address 5
+[5] The SIM just multiplied memory location 2 with value 2 and memory location 3 with value 16 and stored it in memory location 3 now with value 32
+[6] The SIM just added memory location 0 with value 1 and memory location 1 with value -1 and stored it in memory location 0 now with value 0
+[7] The SIM just checked memory location 0 with value 0 and it was 0, so it jumped to instruction address 9
+[9] The SIM just halted

@@ -1,0 +1,7 @@
+Constructed SIM
+fetched_instructions count: 6
+[0] The SIM just stored the value 10 in memory location 0 now with value 10
+[1] The SIM just multiplied memory location 0 with value 10 and memory location 0 with value 10 and stored it in memory location 1 now with value 100
+[2] The SIM just jumped to instruction address 4
+[4] The SIM just negated memory location 1 with value 100 and stored it in memory location 2 now with value -100
+[5] The SIM just halted
