@@ -144,6 +144,7 @@ void JPA_instruction::execute(){
     // execute the jpa instruction and update the instruction counter
     
     std::cout << "[" << (*instruction_counter) << "] ";
+    // make sure the jump is to a valid instruction
     if (operand1 >= 0 && operand1 < *fetched_instructions_count){
         *instruction_counter = operand1-1;
     } else {

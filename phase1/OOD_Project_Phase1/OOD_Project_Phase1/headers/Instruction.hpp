@@ -5,6 +5,10 @@
 
 class Instruction;
 
+/*
+    The InstructionFactory class is a factory class that creates instance of 
+    Instruction objects in a polymorphic way.
+*/
 class InstructionFactory{
     public:
         InstructionFactory();
@@ -12,6 +16,10 @@ class InstructionFactory{
         ~InstructionFactory();        
 };
 
+/*
+    The Instruction class is an abstract class that defines the interface for 
+    all the instruction classes.
+*/
 class Instruction {
     public:
         Instruction();
@@ -32,7 +40,10 @@ class Instruction {
         int* fetched_instructions_count;
 };
 
-
+/*
+    The following classes inherit from Instruction. They define and implement their
+    own data members and methods depending on the instruction type.
+*/
 class ADD_instruction : public Instruction {
     public:
         ADD_instruction(std::vector<std::string>& p_instruction);

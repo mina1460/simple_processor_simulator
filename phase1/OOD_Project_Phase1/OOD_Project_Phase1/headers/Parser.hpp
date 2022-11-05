@@ -4,6 +4,10 @@
 #include "includes.hpp"
 #include "Instruction.hpp"
 
+/*
+    The Parser class is responsible for parsing the input file and creating
+    instances of the Instruction class.
+*/
 class parser {
     public:
         parser();

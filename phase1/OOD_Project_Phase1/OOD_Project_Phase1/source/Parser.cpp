@@ -49,6 +49,8 @@ int parser::parse() {
         }
         seek_position = input_file.tellg();
         
+        // try to split the line fetched to get the opcode and operands and create an instruction
+        // if it fails, then throw an exception
         try{
             std::vector<std::string> split_instructions = split(line);
             opcode_t opcode = get_opcode(split_instructions);
@@ -64,6 +66,7 @@ int parser::parse() {
     return counter;
 }
 const std::unordered_map<std::string, opcode_t>& parser::Opcodes() { 
+    // statically maps the opcode string to an int value and returns a pointer to the map
     static const auto* opcodes = new std::unordered_map<std::string, opcode_t>
     { 
         {"ADD", ADD_OPCODE},
@@ -82,6 +85,7 @@ bool match(std::string& str1, std::string str2) {
 }
 
 opcode_t parser::get_opcode(std::vector<std::string>& p_instruction){
+    // returns the opcode of the instruction (as int)
     std::string& operation = p_instruction[0];
     size_t arguments_count = p_instruction.size();
 
