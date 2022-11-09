@@ -10,7 +10,9 @@
 #include <array>
 #include <map>
 #include <unordered_map>
-
+#include <atomic>
+#include <thread>
+#include <mutex>
 
 #define INSTRUCTION_MEMORY_SIZE 1024
 #define DATA_MEMORY_SIZE 1024
