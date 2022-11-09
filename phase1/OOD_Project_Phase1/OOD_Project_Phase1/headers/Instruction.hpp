@@ -24,7 +24,9 @@ class Instruction {
     public:
         Instruction();
         Instruction(std::string line);
+        opcode_t get_opcode();
         int get_opcode(std::vector<std::string>& p_instruction);
+        void set_core_id(int core_id);
         void set_data_memory(std::array<int32_t, DATA_MEMORY_SIZE>* p_data_memory);
         void set_instruction_counter(int* p_instruction_counter);
         void set_fetched_instructions_count(int* p_fetched_instructions_count);
@@ -35,6 +37,7 @@ class Instruction {
         const std::unordered_map<std::string, opcode_t>& Opcodes();
     protected:
         opcode_t opcode;
+        int core_id;
         std::array<int32_t, DATA_MEMORY_SIZE>* data_memory;
         int* instruction_counter;
         int* fetched_instructions_count;
