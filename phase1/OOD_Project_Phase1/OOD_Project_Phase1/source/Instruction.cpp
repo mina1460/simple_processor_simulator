@@ -43,7 +43,7 @@ void Instruction::log(){
     std::cout << "Instruction: " << opcode << " ";
     std::cout << std::endl;
 }
-void Instruction::set_data_memory(std::array<int32_t, DATA_MEMORY_SIZE>* p_data_memory){
+void Instruction::set_data_memory(std::array<std::atomic<int32_t>, DATA_MEMORY_SIZE>* p_data_memory){
     // set the data memory pointer inside the instruction object to know how to operate on the data memory
     data_memory = p_data_memory;
 }

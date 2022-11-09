@@ -2,7 +2,7 @@
 #include "includes.hpp"
 #include "Instruction.hpp"
 
-Core::Core(int core_id, std::array<int32_t, DATA_MEMORY_SIZE>* data_memory_pointer){
+Core::Core(int core_id, std::array<std::atomic<int32_t>, DATA_MEMORY_SIZE>* data_memory_pointer){
     std::cout << "Constructed Core " << core_id << std::endl;
     data_memory = data_memory_pointer;
     this->core_id = core_id;
@@ -33,6 +33,7 @@ void Core::process(){
             instructions_memory[instruction_counter]->set_core_id(core_id);
             instructions_memory[instruction_counter]->execute();
             if (instructions_memory[instruction_counter]->get_opcode() == HLT_OPCODE){
+               // TODO: add a break here this is WRONG, it shouldn't exit everything, just its thread
                exit(0);
                break;
             }

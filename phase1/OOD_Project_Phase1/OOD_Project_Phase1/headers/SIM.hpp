@@ -20,7 +20,7 @@ class SIM {
     private:
         void execute();
         std::vector<Core> cores;    
-        std::array<int32_t, DATA_MEMORY_SIZE> data_memory = {0};                // memory for data (initialized to 0)
+        std::array<std::atomic<int32_t>, DATA_MEMORY_SIZE> data_memory = {0};                // memory for data (initialized to 0)
         int data_counter;                            
         int32_t instruction_register;   
                  
