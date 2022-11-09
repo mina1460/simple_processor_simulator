@@ -3,7 +3,7 @@
 #include "Instruction.hpp"
 
 Core::Core(int core_id, std::array<int32_t, DATA_MEMORY_SIZE>* data_memory_pointer){
-    std::cout << "Constructed Core" << std::endl;
+    std::cout << "Constructed Core " << core_id << std::endl;
     data_memory = data_memory_pointer;
     this->core_id = core_id;
 }
@@ -18,6 +18,7 @@ void Core::add_instructions(std::vector<Instruction*>& p_instructions){
         instruction_counter++;
     }
     fetched_instructions_count = p_instructions.size();
+    std::cout << "Added " << fetched_instructions_count << " instructions to Core " << core_id << std::endl;
 }
 
 void Core::process(){
@@ -29,7 +30,12 @@ void Core::process(){
             // get the instruction from the instruction memory
             instructions_memory[instruction_counter]->set_fetched_instructions_count(&fetched_instructions_count);
             // execute the instruction
+            instructions_memory[instruction_counter]->set_core_id(core_id);
             instructions_memory[instruction_counter]->execute();
+            if (instructions_memory[instruction_counter]->get_opcode() == HLT_OPCODE){
+               exit(0);
+               break;
+            }
             // increment the instruction counter
             instruction_counter++;
         }
