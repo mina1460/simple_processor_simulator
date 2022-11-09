@@ -5,44 +5,29 @@ int SIM::fetched_instructions_count = 0;
 
 SIM::SIM(int n){
     std::cout << "Constructed SIM" << std::endl;
-    instructions_memory.resize(n);
-    std::cout << "instructions_memory size: " << instructions_memory.size() << std::endl;
-
-
-}
-void SIM::add_instructions(std::vector<Instruction*>& p_instructions){
-    instruction_counter = 0;
-    for (auto& instruction : p_instructions){
-        // set the instruction counter and data counter inside the instruction object
-        instruction->set_data_memory(&data_memory);
-        instruction->set_instruction_counter(&instruction_counter);
-        instructions_memory[0][instruction_counter] = instruction; //consider here pointers to instructions
-        instruction_counter++;
+    std::cout << "Number of cores: " << n << std::endl;
+    for (int i = 0; i < n; i++){
+        cores.emplace_back(i, &data_memory);
     }
+    std::cout << "Number of cores in the SIM: " << cores.size() << std::endl;
+}
+void SIM::add_instructions(std::vector<Instruction*>& p_instructions, int core_id){
+    cores[core_id].add_instructions(p_instructions);
 }
 
 void SIM::process(){
-    try{
-        // while the instruction counter is less than the number of instructions and INSTRUCTION_MEMORY_SIZE
-        instruction_counter = 0;
-        while (instruction_counter < std::min(SIM::fetched_instructions_count, INSTRUCTION_MEMORY_SIZE)){
-            // get the instruction from the instruction memory
-            instructions_memory[0][instruction_counter]->set_fetched_instructions_count(&SIM::fetched_instructions_count);
-            // execute the instruction
-            instructions_memory[0][instruction_counter]->execute();
-            // increment the instruction counter
-            instruction_counter++;
+        // launch threads for each core
+        std::vector<std::thread> threads(cores.size());
+    
+        for(int id=0; id<cores.size(); id++){
+            threads[id] = std::thread(&Core::process, &cores[id]);
         }
-    } catch (const std::exception& e){
-        std::cout << "Error executing instruction: " << e.what() << std::endl;
-        throw e;
-    }
+
+        for (auto& thread : threads){
+            thread.join();
+        }
 }
 
 SIM::~SIM(){
     std::cout << "Destructed SIM" << std::endl;
-
-    // for (int i = 0; i < 20; i++){
-    //     std::cout << "data_memory[" << i << "]: " << data_memory[i] << std::endl;
-    // }
 }
