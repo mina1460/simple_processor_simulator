@@ -1,5 +1,5 @@
 CC=g++
-C++11=-std=c++11
+C++11=-std=c++17
 INCLUDES=-I ./headers
 DEBUG=-g
 HEADERS=./headers/*.hpp
