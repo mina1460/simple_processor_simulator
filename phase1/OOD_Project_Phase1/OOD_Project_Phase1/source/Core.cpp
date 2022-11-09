@@ -33,9 +33,9 @@ void Core::process(){
             instructions_memory[instruction_counter]->set_core_id(core_id);
             instructions_memory[instruction_counter]->execute();
             if (instructions_memory[instruction_counter]->get_opcode() == HLT_OPCODE){
-               // TODO: add a break here this is WRONG, it shouldn't exit everything, just its thread
-               exit(0);
-               break;
+               std::cout << "Core " << core_id << " HALTING " << std::endl;
+                return;
+                
             }
             // increment the instruction counter
             instruction_counter++;
