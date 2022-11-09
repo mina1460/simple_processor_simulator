@@ -12,4 +12,4 @@ clean:
 	rm -f SIM
 
 debug:
-	$(CC) $(C++11) $(INCLUDES) $(DEBUG) -o SIM Instruction.cpp main.cpp Parser.cpp SIM.cpp
+	$(CC) $(C++11) $(INCLUDES) $(DEBUG) -o SIM Instruction.cpp main.cpp Parser.cpp SIM.cpp Core.cpp
