@@ -54,6 +54,13 @@ void Instruction::set_instruction_counter(int* p_instruction_counter){
 void Instruction::set_fetched_instructions_count(int* p_fetched_instructions_count){
     fetched_instructions_count = p_fetched_instructions_count;
 }
+opcode_t Instruction::get_opcode(){
+    return opcode;
+}
+
+void Instruction::set_core_id(int _core_id){
+    this->core_id = _core_id;
+}
 
 InstructionFactory::~InstructionFactory(){}
 Instruction::Instruction(){}
@@ -79,7 +86,7 @@ void ADD_instruction::execute(){
     (*data_memory)[result] = num1 + num2;
 
     // report the instruction execution log
-    std::cout << "[" << (*instruction_counter) << "] The SIM just added memory location " << operand1 << " with value " << num1 
+    std::cout << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] The SIM just added memory location " << operand1 << " with value " << num1 
             << " and memory location " << operand2 << " with value " << num2 
             << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
             << std::endl;
@@ -103,7 +110,7 @@ void NEG_instruction::execute(){
     int32_t num1 = (*data_memory)[operand1];
     (*data_memory)[result] = -num1;
 
-    std::cout << "[" << (*instruction_counter) << "] The SIM just negated memory location " << operand1 << " with value " << num1 
+     std::cout << "[Thread "<<core_id <<"][" <<  (*instruction_counter) << "] The SIM just negated memory location " << operand1 << " with value " << num1 
             << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
             << std::endl;
 }
@@ -125,7 +132,7 @@ void MUL_instruction::execute(){
     int32_t op_result = num1 * num2;
     (*data_memory)[result] = op_result;
     // report the instruction execution log
-    std::cout << "[" << (*instruction_counter) << "] The SIM just multiplied memory location " << operand1 << " with value " << num1 
+    std::cout << "[Thread "<<core_id <<"][" <<  (*instruction_counter) << "] The SIM just multiplied memory location " << operand1 << " with value " << num1 
             << " and memory location " << operand2 << " with value " << num2 
             << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
             << std::endl;
@@ -143,7 +150,7 @@ JPA_instruction::JPA_instruction(std::vector<std::string>& p_instruction){
 void JPA_instruction::execute(){
     // execute the jpa instruction and update the instruction counter
     
-    std::cout << "[" << (*instruction_counter) << "] ";
+     std::cout << "[Thread "<<core_id <<"][" <<  (*instruction_counter) << "] ";
     // make sure the jump is to a valid instruction
     if (operand1 >= 0 && operand1 < *fetched_instructions_count){
         *instruction_counter = operand1-1;
@@ -165,7 +172,7 @@ JP0_instruction::JP0_instruction(std::vector<std::string>& p_instruction){
 }
 void JP0_instruction::execute(){
     // execute the jp0 instruction and update the instruction counter
-    std::cout << "[" << (*instruction_counter) << "] ";
+     std::cout << "[Thread "<<core_id <<"][" <<  (*instruction_counter) << "] ";
     int32_t num = data_memory->at(operand1);
     if (operand2 >= 0 && operand2 < *fetched_instructions_count){
         if ( num == 0){
@@ -174,7 +181,7 @@ void JP0_instruction::execute(){
     } else {
         throw(std::invalid_argument("Instruction address out of range for JP0 instruction"));
     }
-    std::cout << "The SIM just checked memory location " << operand1 << " with value " << num 
+    std::cout << "[Thread "<<core_id <<"]" << "The SIM just checked memory location " << operand1 << " with value " << num 
             << ((num == 0) ? (" and it was 0, so it jumped to instruction address ") :
             (" and it was not 0, so it did not jump to memory address ")) << (*instruction_counter+1)
             << std::endl;
@@ -191,7 +198,7 @@ ASI_instruction::ASI_instruction(std::vector<std::string>& p_instruction){
 void ASI_instruction::execute(){
     // std::cout << "Executing ASI instruction" << std::endl;
     (*data_memory)[operand2] = operand1;
-    std::cout << "[" << (*instruction_counter) << "] The SIM just stored the value " << operand1 << " in memory location " << operand2 << " now with value " << (*data_memory)[operand2] << std::endl;
+     std::cout << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] The SIM just stored the value " << operand1 << " in memory location " << operand2 << " now with value " << (*data_memory)[operand2] << std::endl;
 }
 
 LOE_instruction::LOE_instruction(std::vector<std::string>& p_instruction){
@@ -208,7 +215,7 @@ void LOE_instruction::execute(){
     int32_t num2 = (*data_memory)[operand2];
     int32_t op_result = num1 <= num2;
     (*data_memory)[result] = op_result;
-    std::cout << "[" << (*instruction_counter) << "] The SIM just compared memory location " << operand1 << " with value " << num1 
+    std::cout << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] The SIM just compared memory location " << operand1 << " with value " << num1 
             << " and memory location " << operand2 << " with value " << num2 
             << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
             << std::endl;
@@ -221,6 +228,5 @@ HLT_instruction::HLT_instruction(std::vector<std::string>& p_instruction){
     }
 }
 void HLT_instruction::execute(){
-    std::cout << "[" << (*instruction_counter) << "] The SIM just halted" << std::endl;
-    exit(0);
+    std::cout << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] The SIM just halted" << std::endl;
 }
