@@ -12,13 +12,13 @@
 class SIM {
     public:
         static int fetched_instructions_count;
-        SIM();
+        SIM(int n);
         void add_instructions(std::vector<Instruction*>& p_instructions);
         void process();
         ~SIM();
     private:
         void execute();
-        std::array<Instruction*, INSTRUCTION_MEMORY_SIZE> instructions_memory;  // memory for instructions
+        std::vector<std::array<Instruction*, INSTRUCTION_MEMORY_SIZE>> instructions_memory;  // memory for instructions
         std::array<int32_t, DATA_MEMORY_SIZE> data_memory = {0};                // memory for data (initialized to 0)
         int instruction_counter;                        // holds value of current instruction to be executed             
         int data_counter;                            

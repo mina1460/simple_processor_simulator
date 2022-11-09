@@ -3,10 +3,11 @@
 
 int SIM::fetched_instructions_count = 0;
 
-SIM::SIM(){
+SIM::SIM(int n){
     std::cout << "Constructed SIM" << std::endl;
-    instruction_counter = 0;
-    data_counter = 0;
+    instructions_memory.resize(n);
+    std::cout << "instructions_memory size: " << instructions_memory.size() << std::endl;
+
 
 }
 void SIM::add_instructions(std::vector<Instruction*>& p_instructions){
@@ -15,7 +16,7 @@ void SIM::add_instructions(std::vector<Instruction*>& p_instructions){
         // set the instruction counter and data counter inside the instruction object
         instruction->set_data_memory(&data_memory);
         instruction->set_instruction_counter(&instruction_counter);
-        instructions_memory[instruction_counter] = instruction; //consider here pointers to instructions
+        instructions_memory[0][instruction_counter] = instruction; //consider here pointers to instructions
         instruction_counter++;
     }
 }
@@ -26,9 +27,9 @@ void SIM::process(){
         instruction_counter = 0;
         while (instruction_counter < std::min(SIM::fetched_instructions_count, INSTRUCTION_MEMORY_SIZE)){
             // get the instruction from the instruction memory
-            instructions_memory[instruction_counter]->set_fetched_instructions_count(&SIM::fetched_instructions_count);
+            instructions_memory[0][instruction_counter]->set_fetched_instructions_count(&SIM::fetched_instructions_count);
             // execute the instruction
-            instructions_memory[instruction_counter]->execute();
+            instructions_memory[0][instruction_counter]->execute();
             // increment the instruction counter
             instruction_counter++;
         }
