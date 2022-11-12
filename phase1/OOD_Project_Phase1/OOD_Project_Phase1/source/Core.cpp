@@ -33,9 +33,10 @@ void Core::process(){
             instructions_memory[instruction_counter]->set_core_id(core_id);
             instructions_memory[instruction_counter]->execute();
             if (instructions_memory[instruction_counter]->get_opcode() == HLT_OPCODE){
-               std::cout << "Core " << core_id << " HALTING " << std::endl;
+                std::stringstream log_msg;
+                log_msg << "***** Core " << core_id << " HALTING *****" << std::endl;
+                std::cout << log_msg.str();
                 return;
-                
             }
             // increment the instruction counter
             instruction_counter++;
