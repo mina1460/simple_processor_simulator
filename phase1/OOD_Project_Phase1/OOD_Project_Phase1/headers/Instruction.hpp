@@ -30,11 +30,13 @@ class Instruction {
         void set_data_memory(std::array<std::atomic<int32_t>, DATA_MEMORY_SIZE>* p_data_memory);
         void set_instruction_counter(int* p_instruction_counter);
         void set_fetched_instructions_count(int* p_fetched_instructions_count);
+        void set_log_msg(std::stringstream& log_msg);
         virtual void execute() = 0;
         virtual void log();
         ~Instruction();
     private:
         const std::unordered_map<std::string, opcode_t>& Opcodes();
+        std::stringstream log_msg;
     protected:
         opcode_t opcode;
         int core_id;
