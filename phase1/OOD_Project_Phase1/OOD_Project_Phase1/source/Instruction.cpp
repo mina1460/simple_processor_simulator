@@ -54,7 +54,9 @@ void Instruction::set_fetched_instructions_count(int* p_fetched_instructions_cou
     fetched_instructions_count = p_fetched_instructions_count;
 }
 void Instruction::set_log_msg(std::stringstream& p_log_msg){
-    log_msg << p_log_msg.rdbuf();;
+
+    log_msg.str(p_log_msg.str());
+    // log_msg << p_log_msg.rdbuf();
 }
 
 opcode_t Instruction::get_opcode(){
@@ -94,7 +96,9 @@ void ADD_instruction::execute(){
             << " and memory location " << operand2 << " with value " << num2 
             << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
             << std::endl;
-    std::cout << log_msg.str();
+    set_log_msg(log_msg);
+    log();
+    // std::cout << log_msg.str();
 }
 
 NEG_instruction::NEG_instruction(std::vector<std::string>& p_instruction){
@@ -120,7 +124,9 @@ void NEG_instruction::execute(){
     log_msg << "[Thread "<<core_id <<"][" <<  (*instruction_counter) << "] The SIM just negated memory location " << operand1 << " with value " << num1 
             << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
             << std::endl;
-    std::cout << log_msg.str();
+    set_log_msg(log_msg);
+    log();
+    // std::cout << log_msg.str();
 }
 
 MUL_instruction::MUL_instruction(std::vector<std::string>& p_instruction){
@@ -146,7 +152,9 @@ void MUL_instruction::execute(){
             << " and memory location " << operand2 << " with value " << num2 
             << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
             << std::endl;
-    std::cout << log_msg.str();
+    set_log_msg(log_msg);
+    log();
+    // std::cout << log_msg.str();
 }
 
 
@@ -173,7 +181,9 @@ void JPA_instruction::execute(){
     // report the instruction execution log
     log_msg << "The SIM just jumped to instruction address " << (*instruction_counter+1)
             << std::endl;
-    std::cout << log_msg.str();
+    set_log_msg(log_msg);
+    log();
+    // std::cout << log_msg.str();
 }
 
 JP0_instruction::JP0_instruction(std::vector<std::string>& p_instruction){
@@ -204,7 +214,9 @@ void JP0_instruction::execute(){
             << ((num == 0) ? (" and it was 0, so it jumped to instruction address ") :
             (" and it was not 0, so it did not jump to memory address ")) << (*instruction_counter+1)
             << std::endl;
-    std::cout << log_msg.str();
+    set_log_msg(log_msg);
+    log();
+    // std::cout << log_msg.str();
 }
 
 ASI_instruction::ASI_instruction(std::vector<std::string>& p_instruction){
@@ -222,7 +234,9 @@ void ASI_instruction::execute(){
     // report the instruction execution log
     std::stringstream log_msg;
     log_msg << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] The SIM just stored the value " << operand1 << " in memory location " << operand2 << " now with value " << (*data_memory)[operand2] << std::endl;
-    std::cout << log_msg.str();
+    set_log_msg(log_msg);
+    log();
+    // std::cout << log_msg.str();
 }
 
 LOE_instruction::LOE_instruction(std::vector<std::string>& p_instruction){
@@ -246,7 +260,9 @@ void LOE_instruction::execute(){
             << " and memory location " << operand2 << " with value " << num2 
             << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
             << std::endl;
-    std::cout << log_msg.str();
+    set_log_msg(log_msg);
+    log();
+    // std::cout << log_msg.str();
 }
 
 HLT_instruction::HLT_instruction(std::vector<std::string>& p_instruction){
@@ -260,5 +276,7 @@ void HLT_instruction::execute(){
     // report the instruction execution log
     std::stringstream log_msg;
     log_msg << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] The SIM just halted" << std::endl;
-    std::cout << log_msg.str();
+    set_log_msg(log_msg);
+    log();
+    // std::cout << log_msg.str();
 }
