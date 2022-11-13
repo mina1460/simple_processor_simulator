@@ -23,7 +23,9 @@ void Core::add_instructions(std::vector<Instruction*>& p_instructions){
 
 void Core::process(){
     try{
-        std::cout << "Core " << core_id << " started processing in the thread " << std::endl;
+        std::stringstream ss;
+        ss << "Core " << core_id << " started processing in the thread " << std::endl;
+        std::cout << ss.str();
         // while the instruction counter is less than the number of instructions and INSTRUCTION_MEMORY_SIZE
         instruction_counter = 0;
         while (instruction_counter < std::min(Core::fetched_instructions_count, INSTRUCTION_MEMORY_SIZE)){
