@@ -2,6 +2,7 @@
 #include "../headers/SIM.hpp"
 #include "../headers/SystemCalls.hpp"
 
+// static variables
 int SIM::fetched_instructions_count = 0;
 std::array<std::atomic<int32_t>, DATA_MEMORY_SIZE> SIM::data_memory = {0};
 

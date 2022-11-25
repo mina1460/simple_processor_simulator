@@ -4,6 +4,11 @@
 
 #include "SIM.hpp"
 
+/* 
+    SystemCalls class is responsible for handling the system calls. It is a friend class
+    the SIM class. It is responsible for reading and writing the data memory in a thread
+    -safe manner.
+*/
 class SystemCalls {
     private:
         static std::mutex mtx;

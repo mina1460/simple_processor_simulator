@@ -11,7 +11,7 @@
     memory and executing them. Also, it is responsible for storing the data memory.
 */
 class SIM {
-    friend class SystemCalls;
+    friend class SystemCalls;   // friend class to access the data memory
     public:
         static int fetched_instructions_count;
         SIM(int n);
