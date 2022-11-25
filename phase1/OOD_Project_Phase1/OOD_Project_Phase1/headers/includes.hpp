@@ -13,6 +13,8 @@
 #include <atomic>
 #include <thread>
 #include <mutex>
+#include <dirent.h>
+#include <sys/stat.h>
 
 #define INSTRUCTION_MEMORY_SIZE 1024
 #define DATA_MEMORY_SIZE 1024
