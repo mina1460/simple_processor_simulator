@@ -51,5 +51,4 @@ void Core::process(){
 
 
 Core::~Core(){
-    std::cout << "Destructed Core " << core_id << std::endl;
 }

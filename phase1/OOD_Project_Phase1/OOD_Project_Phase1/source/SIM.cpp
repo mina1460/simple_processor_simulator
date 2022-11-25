@@ -32,5 +32,5 @@ void SIM::process(){
 
 SIM::~SIM(){
     SystemCalls::print_data_memory(25);
-    std::cout << "Destructed SIM" << std::endl;
+    std::cout << "Destructed SIM and its " << cores.size() << " cores " << std::endl;
 }
