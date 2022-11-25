@@ -11,6 +11,7 @@
     memory and executing them. Also, it is responsible for storing the data memory.
 */
 class SIM {
+    friend class SystemCalls;
     public:
         static int fetched_instructions_count;
         SIM(int n);
@@ -20,7 +21,7 @@ class SIM {
     private:
         void execute();
         std::vector<Core> cores;    
-        std::array<std::atomic<int32_t>, DATA_MEMORY_SIZE> data_memory = {0};  // memory for data (initialized to 0)
+        static std::array<std::atomic<int32_t>, DATA_MEMORY_SIZE> data_memory;  // memory for data
         int data_counter;                            
         int32_t instruction_register;   
 };

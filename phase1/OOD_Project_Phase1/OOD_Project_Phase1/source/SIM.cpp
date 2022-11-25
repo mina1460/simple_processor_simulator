@@ -1,7 +1,9 @@
 #include "../headers/includes.hpp"
 #include "../headers/SIM.hpp"
+#include "../headers/SystemCalls.hpp"
 
 int SIM::fetched_instructions_count = 0;
+std::array<std::atomic<int32_t>, DATA_MEMORY_SIZE> SIM::data_memory = {0};
 
 SIM::SIM(int n){
     
@@ -29,5 +31,6 @@ void SIM::process(){
 }
 
 SIM::~SIM(){
+    SystemCalls::print_data_memory(25);
     std::cout << "Destructed SIM" << std::endl;
 }

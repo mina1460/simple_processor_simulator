@@ -1,5 +1,6 @@
 
 #include "../headers/Instruction.hpp"
+#include "../headers/SystemCalls.hpp"
 
 
 InstructionFactory::InstructionFactory(){}
@@ -85,20 +86,17 @@ ADD_instruction::ADD_instruction(std::vector<std::string>& p_instruction){
 }
 void ADD_instruction::execute(){
     // execute the add instruction and update the data memory
-    int32_t num1 = (*data_memory)[operand1];
-    int32_t num2 = (*data_memory)[operand2];
-    
-    (*data_memory)[result] = num1 + num2;
+    std::vector<int32_t> operands = {operand1, operand2, result};
+    int32_t res = SystemCalls::syscall(ADD_OPCODE, operands);
 
     // report the instruction execution log
     std::stringstream log_msg;
-    log_msg << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] The SIM just added memory location " << operand1 << " with value " << num1 
-            << " and memory location " << operand2 << " with value " << num2 
-            << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
+    log_msg << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] ADD: The SIM just added memory location " << operand1 << " with value " << operands[0] 
+            << " and memory location " << operand2 << " with value " << operands[1] 
+            << " and stored it in memory location " << result << " now with value " << res 
             << std::endl;
     set_log_msg(log_msg);
     log();
-    // std::cout << log_msg.str();
 }
 
 NEG_instruction::NEG_instruction(std::vector<std::string>& p_instruction){
@@ -113,20 +111,17 @@ NEG_instruction::NEG_instruction(std::vector<std::string>& p_instruction){
     result = std::stoi(p_instruction[2]);
 }
 void NEG_instruction::execute(){
-
     // execute the neg instruction and update the data memory
-
-    int32_t num1 = (*data_memory)[operand1];
-    (*data_memory)[result] = -num1;
+    std::vector<int32_t> operands = {operand1, result};
+    int32_t res = SystemCalls::syscall(NEG_OPCODE, operands);
 
     // report the instruction execution log
     std::stringstream log_msg;
-    log_msg << "[Thread "<<core_id <<"][" <<  (*instruction_counter) << "] The SIM just negated memory location " << operand1 << " with value " << num1 
-            << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
+    log_msg << "[Thread "<<core_id <<"][" <<  (*instruction_counter) << "] NEG: The SIM just negated memory location " << operand1 << " with value " << operands[0]
+            << " and stored it in memory location " << result << " now with value " << res 
             << std::endl;
     set_log_msg(log_msg);
     log();
-    // std::cout << log_msg.str();
 }
 
 MUL_instruction::MUL_instruction(std::vector<std::string>& p_instruction){
@@ -141,20 +136,17 @@ MUL_instruction::MUL_instruction(std::vector<std::string>& p_instruction){
 }
 void MUL_instruction::execute(){
     // execute the mul instruction and update the data memory
-    int32_t num1 = (*data_memory)[operand1];
-    int32_t num2 = (*data_memory)[operand2];
-    int32_t op_result = num1 * num2;
-    (*data_memory)[result] = op_result;
+    std::vector<int32_t> operands = {operand1, operand2, result};
+    int32_t res = SystemCalls::syscall(MUL_OPCODE, operands);
 
     // report the instruction execution log
     std::stringstream log_msg;
-    log_msg << "[Thread "<<core_id <<"][" <<  (*instruction_counter) << "] The SIM just multiplied memory location " << operand1 << " with value " << num1 
-            << " and memory location " << operand2 << " with value " << num2 
-            << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
+    log_msg << "[Thread "<<core_id <<"][" <<  (*instruction_counter) << "] MUL: The SIM just multiplied memory location " << operand1 << " with value " << operands[0] 
+            << " and memory location " << operand2 << " with value " << operands[1] 
+            << " and stored it in memory location " << result << " now with value " << res 
             << std::endl;
     set_log_msg(log_msg);
     log();
-    // std::cout << log_msg.str();
 }
 
 
@@ -169,7 +161,7 @@ JPA_instruction::JPA_instruction(std::vector<std::string>& p_instruction){
 void JPA_instruction::execute(){
     // execute the jpa instruction and update the instruction counter
     std::stringstream log_msg;
-    log_msg << "[Thread "<<core_id <<"][" <<  (*instruction_counter) << "] ";
+    log_msg << "[Thread "<<core_id <<"][" <<  (*instruction_counter) << "] JPA: ";
     
     // make sure the jump is to a valid instruction
     if (operand1 >= 0 && operand1 < *fetched_instructions_count){
@@ -183,7 +175,6 @@ void JPA_instruction::execute(){
             << std::endl;
     set_log_msg(log_msg);
     log();
-    // std::cout << log_msg.str();
 }
 
 JP0_instruction::JP0_instruction(std::vector<std::string>& p_instruction){
@@ -198,9 +189,10 @@ JP0_instruction::JP0_instruction(std::vector<std::string>& p_instruction){
 void JP0_instruction::execute(){
     // execute the jp0 instruction and update the instruction counter
     std::stringstream log_msg;
-    log_msg << "[Thread "<<core_id <<"][" <<  (*instruction_counter) << "] ";
+    log_msg << "[Thread "<<core_id <<"][" <<  (*instruction_counter) << "] JP0:";
     
-    int32_t num = data_memory->at(operand1);
+    std::vector<int32_t> operands = {operand1};
+    int32_t num = SystemCalls::syscall(JP0_OPCODE, operands);
     if (operand2 >= 0 && operand2 < *fetched_instructions_count){
         if ( num == 0){
             *instruction_counter = operand2-1;
@@ -216,7 +208,6 @@ void JP0_instruction::execute(){
             << std::endl;
     set_log_msg(log_msg);
     log();
-    // std::cout << log_msg.str();
 }
 
 ASI_instruction::ASI_instruction(std::vector<std::string>& p_instruction){
@@ -228,15 +219,15 @@ ASI_instruction::ASI_instruction(std::vector<std::string>& p_instruction){
     operand2 = std::stoi(p_instruction[2]);
 }
 void ASI_instruction::execute(){
-    // std::cout << "Executing ASI instruction" << std::endl;
-    (*data_memory)[operand2] = operand1;
+    // execute the asi instruction and update the data memory
+    std::vector<int32_t> operands = {operand1, operand2};
+    int32_t res = SystemCalls::syscall(ASI_OPCODE, operands);
 
     // report the instruction execution log
     std::stringstream log_msg;
-    log_msg << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] The SIM just stored the value " << operand1 << " in memory location " << operand2 << " now with value " << (*data_memory)[operand2] << std::endl;
+    log_msg << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] ASI: The SIM just stored the value " << operand1 << " in memory location " << operand2 << " now with value " << res << std::endl;
     set_log_msg(log_msg);
     log();
-    // std::cout << log_msg.str();
 }
 
 LOE_instruction::LOE_instruction(std::vector<std::string>& p_instruction){
@@ -249,16 +240,15 @@ LOE_instruction::LOE_instruction(std::vector<std::string>& p_instruction){
     result = std::stoi(p_instruction[3]);
 }
 void LOE_instruction::execute(){
-    int32_t num1 = (*data_memory)[operand1];
-    int32_t num2 = (*data_memory)[operand2];
-    int32_t op_result = num1 <= num2;
-    (*data_memory)[result] = op_result;
+    // execute the loe instruction and update the data memory
+    std::vector<int32_t> operands = {operand1, operand2, result};
+    int32_t res = SystemCalls::syscall(LOE_OPCODE, operands);
 
     // report the instruction execution log
     std::stringstream log_msg;
-    log_msg << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] The SIM just compared memory location " << operand1 << " with value " << num1 
-            << " and memory location " << operand2 << " with value " << num2 
-            << " and stored it in memory location " << result << " now with value " << (*data_memory)[result] 
+    log_msg << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] LOE: The SIM just compared memory location " << operand1 << " with value " << operands[0] 
+            << " and memory location " << operand2 << " with value " << operands[1] 
+            << " and stored it in memory location " << result << " now with value " << res 
             << std::endl;
     set_log_msg(log_msg);
     log();
@@ -275,7 +265,7 @@ void HLT_instruction::execute(){
 
     // report the instruction execution log
     std::stringstream log_msg;
-    log_msg << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] The SIM just halted" << std::endl;
+    log_msg << "[Thread "<<core_id <<"][" << (*instruction_counter) << "] HLT: The SIM just halted" << std::endl;
     set_log_msg(log_msg);
     log();
     // std::cout << log_msg.str();
