@@ -15,6 +15,7 @@
 #include <mutex>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <set>
 
 #define INSTRUCTION_MEMORY_SIZE 1024
 #define DATA_MEMORY_SIZE 1024

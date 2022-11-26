@@ -11,7 +11,9 @@
 */
 class SystemCalls {
     private:
-        static std::mutex mtx;
+        static std::mutex mtx[DATA_MEMORY_SIZE];
+        static void lock(const std::vector<int32_t>& address);
+        static void unlock(const std::vector<int32_t>& address);
         static int read_data_memory(int32_t address);
         static int write_data_memory(int32_t address, int32_t value);
     public:
