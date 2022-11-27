@@ -16,25 +16,15 @@ int SystemCalls::write_data_memory(int32_t address, int32_t value){
 }
 
 // locks the mutex at addresses
-void SystemCalls::lock(const std::vector<int32_t>& addresses){
-    std::set <int32_t> locked;
-    for (int i = 0; i < addresses.size(); i++){
-        if (locked.find(addresses[i]) == locked.end()){
-            mtx[addresses[i]].lock();
-            locked.insert(addresses[i]);
-        }
-    }
+void SystemCalls::lock(const std::set <int32_t>& addresses){
+    for (const int &address : addresses)
+        mtx[address].lock();
 }
 
 // unlocks the mutex at addresses
-void SystemCalls::unlock(const std::vector<int32_t>& addresses){
-    std::set <int32_t> unlocked;
-    for (int i = 0; i < addresses.size(); i++){
-        if (unlocked.find(addresses[i]) == unlocked.end()){
-            mtx[addresses[i]].unlock();
-            unlocked.insert(addresses[i]);
-        }
-    }
+void SystemCalls::unlock(const std::set <int32_t>& addresses){
+    for (const int &address : addresses)
+        mtx[address].unlock();
 }
 
 /* handles the system calls and ensures thread safety by locking the mutex when
@@ -46,7 +36,7 @@ void SystemCalls::unlock(const std::vector<int32_t>& addresses){
 */
 int SystemCalls::syscall(int32_t syscall_id, std::vector<int32_t> & args){
     int return_value = 0;
-    std::vector <int32_t> addresses;
+    std::set <int32_t> addresses;
     switch (syscall_id)
     {
     case ADD_OPCODE:
