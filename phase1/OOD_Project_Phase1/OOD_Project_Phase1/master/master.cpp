@@ -114,21 +114,19 @@ class server{
                                 FD_CLR(i, &master_fds);
                             } else {
                                 std::cout << "Client #" << i << ": " << buffer << std::endl;
-                                std::cout << "Received: " << buffer << std::endl;
                                 // check that string is an integer
                                 std::string buf_content = buffer;
 
-                                
                                 int req_instruction_num = 0;
                                 try {
                                     req_instruction_num = std::stoi(buf_content);
-                                    std::cout << "Instruction number requested: " << req_instruction_num << std::endl;
+                                    
                                 } catch (std::invalid_argument& e){
                                     std::cout << "Invalid argument" << std::endl;
                                     send(i, "Invalid input", 13, 0);
                                     continue;
                                 }
-                                std::cout << "Current instructions size: " << instructions.size() << std::endl;
+                                
                                 if (req_instruction_num >= 0 && req_instruction_num < instructions.size()){  
                                     std::cout << "\nsending instruction #" << req_instruction_num << std::endl;
                                     std::string instruction = instructions[req_instruction_num]->get_instruction_str();

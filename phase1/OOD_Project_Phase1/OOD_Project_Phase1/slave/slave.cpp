@@ -50,6 +50,7 @@ class client{
         void run(){
             while (true){
                 std::cout << "Enter instruction number: ";
+                memset(buffer, 0, BUF_SIZE);
                 std::cin.getline(buffer, BUF_SIZE);
                 if (send(master_socket_fd, buffer, BUF_SIZE, 0) < 0){
                     std::cerr << "[x] Error sending message" << std::endl;
