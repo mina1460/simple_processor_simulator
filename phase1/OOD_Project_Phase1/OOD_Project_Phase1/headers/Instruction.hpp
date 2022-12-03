@@ -33,6 +33,12 @@ class Instruction {
         void set_log_msg(std::stringstream& log_msg);
         virtual void execute() = 0;
         virtual void log();
+        void set_instruction_str(std::string line){
+            instruction_str = line;
+        }
+        std::string get_instruction_str(){
+            return instruction_str;
+        }
         ~Instruction();
     private:
         const std::unordered_map<std::string, opcode_t>& Opcodes();
@@ -40,6 +46,7 @@ class Instruction {
     protected:
         opcode_t opcode;
         int core_id;
+        std::string instruction_str;
         std::array<std::atomic<int32_t>, DATA_MEMORY_SIZE>* data_memory;
         int* instruction_counter;
         int* fetched_instructions_count;

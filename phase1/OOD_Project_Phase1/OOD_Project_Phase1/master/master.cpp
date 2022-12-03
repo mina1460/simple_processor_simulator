@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <iostream>
+#include "../headers/Parser.hpp"
 
 #define PORT 8080
 #define BUF_SIZE 128
@@ -138,6 +139,18 @@ class server{
 };
 
 int main(int argc, char *argv[]){
+    if(argc < 2){
+        std::cout << "Usage: ./server code_path" << std::endl;
+        exit(1);
+    }
+    std::string code_path = argv[1];
+    parser parser(code_path);
+    parser.parse();
+    std::cout << "Parser initialized" << std::endl;
+    std::vector<Instruction*>& p_instructions = parser.get_instructions();
+    for(auto& instruction : p_instructions){
+        std::cout << instruction->get_instruction_str() << std::endl;
+    }
     server s;
     s.run();
     return 0;

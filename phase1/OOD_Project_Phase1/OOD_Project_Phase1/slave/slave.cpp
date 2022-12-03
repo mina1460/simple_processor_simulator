@@ -8,6 +8,8 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <iostream>
+#include <vector>
+#include <fstream>
 
 #define PORT 8080
 #define BUF_SIZE 128
@@ -66,7 +68,26 @@ class client{
         char buffer[BUF_SIZE];
 };
 
-int main(){
+std::vector<int> get_slave_instruction_numbers(std::string path){
+    std::vector<int> instruction_numbers;
+    std::ifstream file(path);
+    if(!file.is_open()){
+        std::cerr << "Error opening file" << std::endl;
+        exit(1);
+    }
+    std::string line;
+    while (std::getline(file, line)){
+        instruction_numbers.push_back(std::stoi(line));
+    }
+    return instruction_numbers;
+}
+
+int main(int argc, char* argv[]){
+    if (argc != 2){
+        std::cerr << "Usage: ./client <path_to_file>" << std::endl;
+        exit(1);
+    }
+    std::vector<int> instruction_numbers = get_slave_instruction_numbers(argv[1]);
     client c;
     c.run();
     return 0;

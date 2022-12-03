@@ -56,6 +56,7 @@ int parser::parse() {
             opcode_t opcode = get_opcode(split_instructions);
             Instruction* instruction = factory.create_instruction(opcode, split_instructions);
             // instruction->log();
+            instruction->set_instruction_str(line);
             instructions.push_back(instruction);
         }catch (std::exception& e){
             std::cerr << "Error creating instruction: " << e.what() << std::endl;
