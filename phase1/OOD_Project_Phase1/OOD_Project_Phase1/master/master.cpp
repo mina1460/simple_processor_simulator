@@ -104,6 +104,7 @@ class server{
                         } else {
                             // existing connection
                             int bytes_read;
+                            memset(buffer, 0, BUF_SIZE);
                             if ((bytes_read = recv(i, buffer, BUF_SIZE, 0)) <= 0){
                                 if (bytes_read == 0){
                                     std::cout << "Connection closed" << std::endl;
@@ -145,7 +146,7 @@ class server{
                                 }
                                 
                                 if (send(i, buffer, bytes_read, 0) < 0){
-                                    std::cerr << "[x] Error sending to socket" << std::endl;
+                                    std::cerr << "[x] Error writing to socket" << std::endl;
                                     exit(1);
                                 }
                             }

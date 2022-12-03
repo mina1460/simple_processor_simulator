@@ -31,10 +31,15 @@ class client{
         }
         void initialize_socket(){
             int multi = 1;
+            // TCP_NODELAY is a socket option that disables the Nagle algorithm.
+            // Nagle's algorithm is a heuristic algorithm used to improve the efficiency of TCP/IP networks by reducing the number of packets sent.
+            // set TCP_NODELAY to 1 to disable Nagle's algorithm
+            
             if (setsockopt(master_socket_fd, SOL_SOCKET, SO_REUSEADDR, (char *)&multi, sizeof(multi)) < 0){
                 std::cerr << "Error setting socket options" << std::endl;
                 exit(1);
             }
+
         }
         void connect_socket(){
             if (connect(master_socket_fd, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0){
