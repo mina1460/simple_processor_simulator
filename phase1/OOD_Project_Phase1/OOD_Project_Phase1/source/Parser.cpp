@@ -25,6 +25,21 @@ parser::parser(std::string _input_code_path) {
     input_code_path = _input_code_path;
 }
 
+Instruction* parser::prepare_instruction(std::string instruction_str){
+     try{
+            std::vector<std::string> split_instructions = split(instruction_str);
+            opcode_t opcode = get_opcode(split_instructions);
+            Instruction* instruction = factory.create_instruction(opcode, split_instructions);
+            // instruction->log();
+            instruction->set_instruction_str(instruction_str);
+            instructions.push_back(instruction);
+            return instruction;
+    }catch (std::exception& e){
+        std::cerr << "Error creating instruction: " << e.what() << std::endl;
+        throw;
+    }
+}
+
 int parser::parse() {
     // returns the number of instructions fetched and places them in the instructions vector
     instructions.clear();
@@ -51,17 +66,7 @@ int parser::parse() {
         
         // try to split the line fetched to get the opcode and operands and create an instruction
         // if it fails, then throw an exception
-        try{
-            std::vector<std::string> split_instructions = split(line);
-            opcode_t opcode = get_opcode(split_instructions);
-            Instruction* instruction = factory.create_instruction(opcode, split_instructions);
-            // instruction->log();
-            instruction->set_instruction_str(line);
-            instructions.push_back(instruction);
-        }catch (std::exception& e){
-            std::cerr << "Error creating instruction: " << e.what() << std::endl;
-            throw;
-        }
+        prepare_instruction(line);
         counter++;
     }
     return counter;

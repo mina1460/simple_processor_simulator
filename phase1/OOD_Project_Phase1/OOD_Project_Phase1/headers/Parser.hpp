@@ -18,7 +18,8 @@ class parser {
         const std::unordered_map<std::string, opcode_t>& Opcodes(); 
         opcode_t get_opcode(std::vector<std::string>& p_instruction);
         std::vector<Instruction*>& get_instructions();
-        std::vector<std::string> split(std::string line); 
+        std::vector<std::string> split(std::string line);
+        Instruction* prepare_instruction(std::string instruction_str); 
         ~parser();
     private:
         std::string input_code_path;

@@ -10,6 +10,9 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include "../headers/Parser.hpp"
+#include "../headers/Core.hpp"
+
 
 #define PORT 8080
 #define BUF_SIZE 128
@@ -48,6 +51,8 @@ class client{
             }
         }
         client(){
+            std::array<std::atomic<int32_t>, DATA_MEMORY_SIZE> data_memory; 
+            core = new Core(1, &data_memory);
             setup_port(PORT);
             initialize_socket();
             connect_socket();
@@ -56,19 +61,37 @@ class client{
             while (true){
                 std::cout << "Enter instruction number: ";
                 memset(buffer, 0, BUF_SIZE);
-                std::cin.getline(buffer, BUF_SIZE);
-                if (send(master_socket_fd, buffer, BUF_SIZE, 0) < 0){
-                    std::cerr << "[x] Error sending message" << std::endl;
+                std::string input;
+                std::cin >> input;
+                if (send(master_socket_fd, input.c_str(), input.length(), 0) < 0){
+                    std::cerr << "Error sending to socket" << std::endl;
                     exit(1);
                 }
+                
                 if (recv(master_socket_fd, buffer, BUF_SIZE, 0) < 0){
                     std::cerr << "[x] Error receiving message" << std::endl;
                     exit(1);
                 }
                 std::cout << "Message received: " << buffer << std::endl;
+                try{
+                    std::string instruction_str = buffer;
+                    std::cout << "Instruction string: " << instruction_str << "." << std::endl;
+                    Instruction* instruction = parser.prepare_instruction(instruction_str);
+                    std::vector<Instruction*> instructions;
+                    instructions.push_back(instruction);
+                    core->add_instructions(instructions);
+                    core->process();
+                }
+                catch (const std::exception& e){
+                    std::cout << "Error parsing instruction" << std::endl;
+                    std::cout << e.what() << std::endl;
+                }
+                
             }
         }
     private:
+        Core* core;
+        parser parser;
         int master_socket_fd;
         struct sockaddr_in server_addr;
         char buffer[BUF_SIZE];
@@ -95,6 +118,7 @@ int main(int argc, char* argv[]){
     }
     std::vector<int> instruction_numbers = get_slave_instruction_numbers(argv[1]);
     client c;
+    
     c.run();
     return 0;
 }
