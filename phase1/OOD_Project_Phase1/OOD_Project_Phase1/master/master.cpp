@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <iostream>
+#include <vector>
 #include "../headers/Parser.hpp"
 
 #define PORT 8080
@@ -58,6 +59,7 @@ class server{
             initialize_socket();
             bind_socket();
             listen_socket();
+
         }
         
 
@@ -66,6 +68,10 @@ class server{
             initialize_socket();
             bind_socket();
             listen_socket();
+        }
+
+        void set_instructions(std::vector<Instruction*>& instructions){
+            this->instructions = instructions;
         }
 
         ~server(){
@@ -102,15 +108,46 @@ class server{
                                 if (bytes_read == 0){
                                     std::cout << "Connection closed" << std::endl;
                                 } else {
-                                    std::cerr << "Error reading from socket" << std::endl;
+                                    std::cerr << "[x] Error reading from socket" << std::endl;
                                 }
                                 close(i);
                                 FD_CLR(i, &master_fds);
                             } else {
                                 std::cout << "Client #" << i << ": " << buffer << std::endl;
                                 std::cout << "Received: " << buffer << std::endl;
+                                // check that string is an integer
+                                std::string buf_content = buffer;
+
+                                
+                                int req_instruction_num = 0;
+                                try {
+                                    req_instruction_num = std::stoi(buf_content);
+                                    std::cout << "Instruction number requested: " << req_instruction_num << std::endl;
+                                } catch (std::invalid_argument& e){
+                                    std::cout << "Invalid argument" << std::endl;
+                                    send(i, "Invalid input", 13, 0);
+                                    continue;
+                                }
+                                std::cout << "Current instructions size: " << instructions.size() << std::endl;
+                                if (req_instruction_num >= 0 && req_instruction_num < instructions.size()){  
+                                    std::cout << "\nsending instruction #" << req_instruction_num << std::endl;
+                                    std::string instruction = instructions[req_instruction_num]->get_instruction_str();
+                                    std::cout << "instruction content: " << instruction << std::endl << std::endl;
+                                    if(send(i, instruction.c_str(), instruction.length(), 0) < 0){
+                                        std::cerr << "[x] Error sending instruction" << std::endl;
+                                    }
+                                    else {
+                                        std::cout << "Instruction sent" << std::endl;
+                                    }
+                                }
+                                else {
+                                    std::cout << "Requested instruction #" << req_instruction_num << " does not exist" << std::endl;
+                                    std::cout << "Invalid instruction number" << std::endl;
+                                    send(i, "Invalid instruction number", 26, 0);
+                                }
+                                
                                 if (send(i, buffer, bytes_read, 0) < 0){
-                                    std::cerr << "Error sending to socket" << std::endl;
+                                    std::cerr << "[x] Error sending to socket" << std::endl;
                                     exit(1);
                                 }
                             }
@@ -123,7 +160,7 @@ class server{
         
         fd_set master_fds;
         fd_set read_fds;
-
+        std::vector<Instruction*> instructions;
         uint16_t max_fd; //max file descriptor number
 
         int master_socket_fd; //master socket file descriptor
@@ -152,6 +189,7 @@ int main(int argc, char *argv[]){
         std::cout << instruction->get_instruction_str() << std::endl;
     }
     server s;
+    s.set_instructions(p_instructions);
     s.run();
     return 0;
 }

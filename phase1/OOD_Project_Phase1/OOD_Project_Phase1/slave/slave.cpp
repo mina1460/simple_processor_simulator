@@ -49,14 +49,14 @@ class client{
         }
         void run(){
             while (true){
-                std::cout << "Enter message: ";
+                std::cout << "Enter instruction number: ";
                 std::cin.getline(buffer, BUF_SIZE);
                 if (send(master_socket_fd, buffer, BUF_SIZE, 0) < 0){
-                    std::cerr << "Error sending message" << std::endl;
+                    std::cerr << "[x] Error sending message" << std::endl;
                     exit(1);
                 }
                 if (recv(master_socket_fd, buffer, BUF_SIZE, 0) < 0){
-                    std::cerr << "Error receiving message" << std::endl;
+                    std::cerr << "[x] Error receiving message" << std::endl;
                     exit(1);
                 }
                 std::cout << "Message received: " << buffer << std::endl;
