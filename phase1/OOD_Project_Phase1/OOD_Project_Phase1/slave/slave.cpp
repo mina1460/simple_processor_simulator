@@ -57,12 +57,14 @@ class client{
             initialize_socket();
             connect_socket();
         }
-        void run(){
-            while (true){
-                std::cout << "Enter instruction number: ";
+        void run(std::vector<int>& instruction_number){
+            for(int i=0; i<instruction_number.size(); i++){
+                
                 memset(buffer, 0, BUF_SIZE);
                 std::string input;
-                std::cin >> input;
+                input = std::to_string(instruction_number[i]);
+                std::cout << "Requesting instruction number: " << input << std::endl;
+
                 if (send(master_socket_fd, input.c_str(), input.length(), 0) < 0){
                     std::cerr << "Error sending to socket" << std::endl;
                     exit(1);
@@ -72,7 +74,7 @@ class client{
                     std::cerr << "[x] Error receiving message" << std::endl;
                     exit(1);
                 }
-                std::cout << "Message received: " << buffer << std::endl;
+                
                 try{
                     std::string instruction_str = buffer;
                     std::cout << "Instruction string: " << instruction_str << "." << std::endl;
@@ -81,10 +83,15 @@ class client{
                     instructions.push_back(instruction);
                     core->add_instructions(instructions);
                     core->process();
+                    if(instruction->get_opcode() == HLT_OPCODE){
+                        break;
+                    }
+                    
                 }
                 catch (const std::exception& e){
                     std::cout << "Error parsing instruction" << std::endl;
                     std::cout << e.what() << std::endl;
+                    i--;
                 }
                 
             }
@@ -119,6 +126,6 @@ int main(int argc, char* argv[]){
     std::vector<int> instruction_numbers = get_slave_instruction_numbers(argv[1]);
     client c;
     
-    c.run();
+    c.run(instruction_numbers);
     return 0;
 }

@@ -109,7 +109,7 @@ class server{
                                 if (bytes_read == 0){
                                     std::cout << "Connection closed" << std::endl;
                                 } else {
-                                    std::cerr << "[x] Error reading from socket" << std::endl;
+                                    std::cerr << "[x] Error reading from socket #" << i << std::endl;
                                 }
                                 close(i);
                                 FD_CLR(i, &master_fds);
@@ -132,7 +132,7 @@ class server{
                                     std::cout << "\nsending instruction #" << req_instruction_num << std::endl;
                                     std::string instruction = instructions[req_instruction_num]->get_instruction_str();
                                     std::cout << "instruction content: " << instruction << std::endl << std::endl;
-                                    if(send(i, instruction.c_str(), instruction.length(), 0) < 0){
+                                    if(send(i, instruction.c_str(), instruction.length()+1, 0) < 0){
                                         std::cerr << "[x] Error sending instruction" << std::endl;
                                     }
                                     else {
