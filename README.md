@@ -5,3 +5,7 @@
 
 ## Phase 2 Design
 ![Class diagram phase2](https://user-images.githubusercontent.com/49838098/211011070-a9b1e2e5-3f04-498d-9803-893c3cb8c59c.png)
+
+
+## Phase 3 tests (Networking feature)
+![output](https://user-images.githubusercontent.com/49838098/211013316-32ed564b-c1e5-4d73-a154-1ab7a7644019.gif)
